@@ -2,7 +2,10 @@
 var game_timer_val = 60
 var question_number = 1
 var answer_points = 0
+var total_points = 0
+var time_points = 0
 var quiz_over = false
+
 
 
 $("#start_button").on("click", function() {
@@ -11,26 +14,25 @@ $("#start_button").on("click", function() {
     $("#score_area").hide()
     $("#intro_box").hide()
     $("#multiple_choice").show()
-    $("#timer_value").text("Time Lef: " + game_timer_val)
+    $("#timer_value").text("Time Left: " + game_timer_val)
 
 
-
+    // Variable to track time
     var game_time = setInterval(function() {
 
         game_timer_val--
-        $("#timer_value").text("Time Lef: " + game_timer_val)
+        $("#timer_value").text("Time Left: " + game_timer_val)
 
-        if (game_timer_val <= 0) {
+        if (game_timer_val <= 0 || quiz_over) {
             clearInterval(game_time)
         }
+        
     
         
     },1000)
 
-    question_1()
-
-    // game_time()
-    
+    // Initiate quiz
+    question_1()    
     
 })
 
@@ -104,6 +106,9 @@ $(".answer_button").on("click", function() {
     }
     else if (question_number == 5) {
         get_name()
+        total_points = answer_points + game_timer_val
+        $("#get_user_name").show()
+        quiz_over = true
     }
     
 
@@ -153,5 +158,65 @@ var check_answer = function(choice) {
 
 // Submit name
 $("#name_submit").on("click", function() {
-    console.log($("#user_name_input").val());
+    
+    // Check if score file exists
+    if ("stored_scores" in localStorage) {
+
+        // Load file and get number of keys
+        var all_scores = JSON.parse(localStorage.getItem("stored_scores"))
+        new_input = [$("#user_name_input").val(), total_points]
+
+        // Create new object and save
+        all_scores.push(new_input)
+        localStorage.setItem("stored_scores", JSON.stringify(all_scores))
+
+
+    }
+    else if (!("stored_scores" in localStorage)) {
+    
+        // Create new input and save
+        new_input = [[$("#user_name_input").val(), total_points]]
+        localStorage.setItem("stored_scores", JSON.stringify(new_input))
+    }
+
 })
+
+// Populate Score table
+var fill_scores = function(){
+
+    if ("stored_scores" in localStorage) {
+
+        // Load file
+        var all_scores = JSON.parse(localStorage.getItem("stored_scores"))
+
+        // console.log(all_scores[:,0]);
+
+        var max_score = 0
+
+        // Get max score
+        all_scores.forEach(function(item, index) {
+            if (item[1] > max_score) max_score = item[1]
+        })
+
+
+        // Loop through each saved score and add table row
+        all_scores.forEach(function(item, index) {
+
+            if (item[1] == max_score) {
+                var new_line = $("<tr class='table-primary'>")
+            }
+            else {
+                var new_line = $("<tr>")
+            }
+            
+            new_line.append($("<th>" + item[0] + "</th>"))
+            new_line.append($("<th>" + item[1] + "</th>"))
+            $("#score_table").append(new_line)
+            console.log(new_line);
+        })
+    }
+
+}
+
+fill_scores()
+console.log("test");

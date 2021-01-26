@@ -35,12 +35,20 @@
     
 
     <!-- Display High Scores -->
-    <div class="container" id="score_area">
+    <div class="container border" id="score_area" style="margin-top: 60px;">
         <div class="row text-center m-4">
             <div class="col-12">
                 <h1>High Scores!</h1>
+                <h4 class="text-muted">Highest score(s) highlighted in blue</h4>
             </div>
-            <div class="col-12" id="score_panel"></div>
+            <div class="col-12" id="score_panel">
+                <table class="table table-bordered" id="score_table">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Score</th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
     
@@ -71,13 +79,16 @@
     
 
     <!-- Div to get name of user -->
-    <div class="container text-center">
-        <h3>Name</h3>
-        <input type="Name" class="form-control" placeholder="Enter username" id="user_name_input">
-        <button class="btn btn-primary m-4" id="name_submit">Submit</button>
+    <div class="container text-center"  id="get_user_name">
+        <div class="row">
+            <h3>Name</h3>
+            <input type="Name" class="form-control" placeholder="Enter username" id="user_name_input">
+            <button class="btn btn-primary m-4" id="name_submit">Submit</button>
+        </div>
+        
     </div>
     
-
+    <!-- Execute js file -->
     <script src="javascript.js"></script>
     
 </body>
