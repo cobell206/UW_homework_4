@@ -106,7 +106,7 @@ $(".answer_button").on("click", function() {
     }
     else if (question_number == 5) {
         get_name()
-        total_points = answer_points + game_timer_val
+        total_points = answer_points + (game_timer_val/10.0)
         $("#get_user_name").show()
         quiz_over = true
     }
@@ -179,6 +179,14 @@ $("#name_submit").on("click", function() {
         localStorage.setItem("stored_scores", JSON.stringify(new_input))
     }
 
+    total_points = 0
+    time_points = 0
+    answer_points = 0
+    $("#get_user_name").hide()
+    $("#score_area").show()
+    $("#score_table tr").remove()
+    fill_scores()
+
 })
 
 // Populate Score table
@@ -189,15 +197,13 @@ var fill_scores = function(){
         // Load file
         var all_scores = JSON.parse(localStorage.getItem("stored_scores"))
 
-        // console.log(all_scores[:,0]);
-
+        // Initial max score
         var max_score = 0
 
         // Get max score
         all_scores.forEach(function(item, index) {
             if (item[1] > max_score) max_score = item[1]
         })
-
 
         // Loop through each saved score and add table row
         all_scores.forEach(function(item, index) {
