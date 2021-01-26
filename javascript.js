@@ -183,6 +183,7 @@ $("#name_submit").on("click", function() {
     time_points = 0
     answer_points = 0
     $("#get_user_name").hide()
+    $("#intro_box").show()
     $("#score_area").show()
     $("#score_table tr").remove()
     fill_scores()
